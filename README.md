@@ -1,20 +1,36 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# MD. AMIMUL AHASUN ANAS | Cyber Security Analyst Portfolio
 
-# Run and deploy your AI Studio app
+Professional portfolio website built with React, TypeScript, and Tailwind CSS. Featuring a custom "Cyber Security" theme with terminal-inspired UI components.
 
-This contains everything you need to run your app locally.
+## 🚀 Features
+- **Interactive Terminal**: A custom-built terminal hero section.
+- **Operational History**: Detailed timeline of professional experience.
+- **Project Showcase**: Impact-focused project highlights.
+- **Technical Arsenal**: Categorized skill and tool stack.
+- **Responsive Design**: Fully optimized for mobile and desktop.
+- **Modern Tech Stack**: React 19, Vite, Motion, and Tailwind CSS 4.
 
-View your app in AI Studio: https://ai.studio/apps/6dab6b40-a5bc-492d-a7a5-0ce9480ee63c
+## 🛠️ Tech Stack
+- **Frontend**: React 19, TypeScript
+- **Styling**: Tailwind CSS 4
+- **Animations**: Motion (framer-motion)
+- **Icons**: Lucide React
+- **Build Tool**: Vite
 
-## Run Locally
+## 💻 Local Development
 
-**Prerequisites:**  Node.js
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/your-repo-name.git
+   ```
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the development server:
+   ```bash
+   npm run dev
+   ```
 
-
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## 📄 License
+This project is licensed under the Apache-2.0 License.
