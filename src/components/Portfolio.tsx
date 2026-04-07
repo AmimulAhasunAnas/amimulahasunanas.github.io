@@ -66,7 +66,7 @@ export const Navbar = () => {
             <Shield className="text-cyber-green w-5 h-5" />
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold tracking-tighter text-white leading-none">ANAS.SEC</span>
+            <span className="font-display font-bold tracking-tighter text-white leading-none">ANAS</span>
             <span className="text-[8px] font-mono text-cyber-green uppercase tracking-[0.2em] mt-1">Security Analyst</span>
           </div>
         </motion.div>
