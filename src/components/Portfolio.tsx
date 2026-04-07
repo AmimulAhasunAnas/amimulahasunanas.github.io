@@ -66,7 +66,7 @@ export const Navbar = () => {
             <Shield className="text-cyber-green w-5 h-5" />
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold tracking-tighter text-white leading-none">ANAS.SEC</span>
+            <span className="font-display font-bold tracking-tighter text-white leading-none">ANAS.SYS</span>
             <span className="text-[8px] font-mono text-cyber-green uppercase tracking-[0.2em] mt-1">Security Analyst</span>
           </div>
         </motion.div>
@@ -534,10 +534,14 @@ export const Contact = () => (
             <Shield size={48} className="text-cyber-green" />
           </div>
           <h3 className="text-xl font-display font-bold text-white mb-6">Secure Transmission</h3>
-          <button className="btn-cyber w-full group">
+          <a 
+            href={PERSONAL_INFO.cvUrl} 
+            download="MD_AMIMUL_AHASUN_ANAS_CV.pdf"
+            className="btn-cyber w-full group"
+          >
             <Download size={16} className="group-hover:translate-y-0.5 transition-transform" />
             Download CV
-          </button>
+          </a>
           <span className="mt-6 micro-label">Verification: AES-256</span>
         </div>
       </div>

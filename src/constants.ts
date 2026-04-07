@@ -4,6 +4,7 @@ export const PERSONAL_INFO = {
   mobile: "+8801737766907",
   email: "anasamimulahasun@gmail.com",
   linkedin: "https://www.linkedin.com/in/amimulahasunanas/",
+  cvUrl: "/cv.pdf",
   profile: "Detail-oriented, self-motivated, and analytical Cyber Security Analyst with a BSc in Computer Science. A collaborative problem-solver with proven expertise in SIEM, EDR, threat hunting, and vulnerability assessment. Passionate to leverage a strong technical skill set to contribute to a challenging and innovative security environment.",
 };
 
