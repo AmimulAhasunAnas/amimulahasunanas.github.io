@@ -35,9 +35,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
-          cache: 'npm'
-      - name: Check Node version
-        run: node -v
       - name: Install dependencies
         run: npm install --legacy-peer-deps
       - name: Build
