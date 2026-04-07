@@ -19,7 +19,10 @@ export default function App() {
   });
 
   return (
-    <div className="relative min-h-screen selection:bg-cyber-green/30 selection:text-cyber-green">
+    <div className="relative min-h-screen selection:bg-cyber-green/30 selection:text-cyber-green cyber-grid">
+      {/* Scanline Effect */}
+      <div className="scanline fixed inset-0 pointer-events-none z-[99]"></div>
+      
       {/* Progress Bar */}
       <motion.div
         className="fixed top-0 left-0 right-0 h-1 bg-cyber-green z-[100] origin-left"
