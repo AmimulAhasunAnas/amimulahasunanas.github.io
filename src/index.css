@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  
+  --color-cyber-green: #00ff41;
+  --color-cyber-blue: #00f0ff;
+  --color-cyber-red: #ff003c;
+  --color-cyber-dark: #0a0a0b;
+  --color-cyber-gray: #1a1a1c;
+}
+
+@layer base {
+  body {
+    @apply bg-cyber-dark text-gray-300 font-sans selection:bg-cyber-green/30 selection:text-cyber-green;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-mono font-bold tracking-tight text-white;
+  }
+}
+
+@layer components {
+  .cyber-border {
+    @apply border border-cyber-green/20 hover:border-cyber-green/50 transition-colors;
+  }
+
+  .cyber-glow {
+    @apply shadow-[0_0_15px_rgba(0,255,65,0.1)] hover:shadow-[0_0_25px_rgba(0,255,65,0.2)];
+  }
+
+  .terminal-window {
+    @apply bg-cyber-gray/80 backdrop-blur-md border border-white/10 rounded-lg overflow-hidden;
+  }
+
+  .terminal-header {
+    @apply bg-white/5 px-4 py-2 flex items-center gap-2 border-b border-white/10;
+  }
+
+  .terminal-dot {
+    @apply w-3 h-3 rounded-full;
+  }
+
+  .btn-cyber {
+    @apply px-6 py-2 bg-transparent border border-cyber-green text-cyber-green font-mono text-sm uppercase tracking-widest hover:bg-cyber-green hover:text-cyber-dark transition-all duration-300 relative overflow-hidden;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-cyber-dark;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-white/10 rounded-full hover:bg-cyber-green/50 transition-colors;
+}
+
+/* Matrix-like background effect */
+.matrix-bg {
+  background-image: radial-gradient(circle at 2px 2px, rgba(0, 255, 65, 0.05) 1px, transparent 0);
+  background-size: 40px 40px;
+}
