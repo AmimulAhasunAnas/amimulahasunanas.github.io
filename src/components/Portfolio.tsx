@@ -51,7 +51,7 @@ export const Navbar = () => (
         className="flex items-center gap-2"
       >
         <Shield className="text-cyber-green w-6 h-6" />
-        <span className="font-mono font-bold tracking-tighter text-white">ANAS.SYS</span>
+        <span className="font-mono font-bold tracking-tighter text-white">ANAS.SEC</span>
       </motion.div>
       <div className="hidden md:flex items-center gap-8">
         {["About", "Skills", "Experience", "Projects", "Contact"].map((item) => (
