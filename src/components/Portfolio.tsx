@@ -66,7 +66,7 @@ export const Navbar = () => {
             <Shield className="text-cyber-green w-5 h-5" />
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold tracking-tighter text-white leading-none">ANAS</span>
+            <span className="font-display font-bold tracking-tighter text-white leading-none">ANAS.SEC</span>
             <span className="text-[8px] font-mono text-cyber-green uppercase tracking-[0.2em] mt-1">Security Analyst</span>
           </div>
         </motion.div>
@@ -237,16 +237,16 @@ export const Hero = () => {
   );
 };
 
-export const s = () => (
-  <section id="s" className="py-32 relative overflow-hidden">
+export const Skills = () => (
+  <section id="skills" className="py-32 relative overflow-hidden">
     <div className="max-w-7xl mx-auto px-6">
       <SectionHeader title="Technical Arsenal" subtitle="Capabilities" number="01" />
       
       <div className="grid lg:grid-cols-3 gap-8">
         <div className="lg:col-span-2 grid md:grid-cols-2 gap-6">
-          {S.technical.map((, i) => (
+          {SKILLS.technical.map((skill, i) => (
             <motion.div 
-              key={}
+              key={skill}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: i * 0.05 }}
@@ -259,7 +259,7 @@ export const s = () => (
                 </div>
                 <span className="text-[9px] font-mono text-white/10 group-hover:text-cyber-green/30 transition-colors uppercase">Module_{i+1}</span>
               </div>
-              <h4 className="text-white font-mono text-sm group-hover:text-cyber-green transition-colors">{}</h4>
+              <h4 className="text-white font-mono text-sm group-hover:text-cyber-green transition-colors">{skill}</h4>
               <div className="mt-4 h-0.5 w-full bg-white/5 overflow-hidden">
                 <motion.div 
                   initial={{ x: "-100%" }}
