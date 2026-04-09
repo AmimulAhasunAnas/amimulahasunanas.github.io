@@ -73,7 +73,7 @@ export const Navbar = () => {
           </div>
           <div className="flex flex-col">
             <span className="font-display font-bold tracking-tighter text-white leading-none text-lg">ANAS<span className="text-cyber-green">.</span>SEC</span>
-            <span className="text-[7px] font-mono text-white/40 uppercase tracking-[0.4em] mt-1">Security_Node_v2.4</span>
+            <span className="text-[7px] font-mono text-white/40 uppercase tracking-[0.4em] mt-1">Security Analyst</span>
           </div>
         </motion.div>
         
