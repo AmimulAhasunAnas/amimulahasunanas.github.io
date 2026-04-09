@@ -23,9 +23,11 @@ import {
   Globe,
   Server,
   Eye,
-  Download
+  Download,
+  Command
 } from "lucide-react";
 import { PERSONAL_INFO, SKILLS, EXPERIENCE, EDUCATION, CERTIFICATIONS, PROJECTS } from "../constants";
+import { MatrixBackground, InteractiveTerminal, CustomCursor } from "./CyberComponents";
 
 const SectionHeader = ({ title, subtitle, number }: { title: string; subtitle?: string; number?: string }) => (
   <div className="mb-16 relative">
@@ -101,6 +103,7 @@ export const Navbar = () => {
 
 export const Hero = () => {
   const [text, setText] = useState("");
+  const [showTerminal, setShowTerminal] = useState(false);
   const fullText = "Initializing security protocols... Access granted. Welcome, Analyst.";
   
   useEffect(() => {
@@ -114,7 +117,8 @@ export const Hero = () => {
   }, []);
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden cyber-grid">
+    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+      <MatrixBackground />
       <div className="scanline"></div>
       
       <div className="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-20 items-center">
@@ -130,7 +134,7 @@ export const Hero = () => {
           
           <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold mb-8 leading-[0.85] tracking-tighter text-white">
             {PERSONAL_INFO.name.split(' ').map((word, i) => (
-              <span key={i} className={i >= 2 ? "text-cyber-green block" : "block"}>
+              <span key={i} className={i >= 2 ? "text-cyber-green block glitch-hover" : "block glitch-hover"}>
                 {word}
               </span>
             ))}
@@ -145,7 +149,14 @@ export const Hero = () => {
               <Eye size={16} />
               View Operations
             </a>
-            <div className="flex items-center gap-6">
+            <button 
+              onClick={() => setShowTerminal(true)}
+              className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-[0.3em] text-white/40 hover:text-cyber-green transition-all group"
+            >
+              <Command size={14} className="group-hover:rotate-12 transition-transform" />
+              Open Terminal
+            </button>
+            <div className="flex items-center gap-6 ml-auto">
               <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="text-white/30 hover:text-cyber-green transition-all duration-300 hover:scale-110">
                 <Linkedin size={22} />
               </a>
@@ -156,82 +167,83 @@ export const Hero = () => {
           </div>
         </motion.div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="relative hidden lg:block"
-        >
-          <div className="terminal-window cyber-glow border-cyber-green/20">
-            <div className="terminal-header">
-              <div className="flex gap-1.5">
-                <div className="terminal-dot bg-cyber-red/50"></div>
-                <div className="terminal-dot bg-yellow-500/50"></div>
-                <div className="terminal-dot bg-cyber-green/50"></div>
-              </div>
-              <div className="flex-1 text-center">
-                <span className="micro-label !text-white/20">root@anas-sec:~</span>
-              </div>
-            </div>
-            <div className="p-8 font-mono text-xs space-y-6 min-h-[360px]">
-              <div className="text-cyber-green/60 italic mb-4">
-                {text}<span className="animate-pulse">|</span>
-              </div>
-              
-              <div className="space-y-4">
-                <div className="flex gap-3">
-                  <span className="text-cyber-green opacity-50">#</span>
-                  <span className="text-white/80">fetch --identity</span>
-                </div>
-                <div className="pl-6 border-l border-white/5 space-y-1 text-gray-500">
-                  <div className="flex justify-between">
-                    <span>NAME:</span>
-                    <span className="text-white">{PERSONAL_INFO.name}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>ROLE:</span>
-                    <span className="text-white">{PERSONAL_INFO.title}</span>
-                  </div>
-                  <div className="flex justify-between">
-                    <span>LOC:</span>
-                    <span className="text-white">Dhaka, BD</span>
-                  </div>
-                </div>
-
-                <div className="flex gap-3">
-                  <span className="text-cyber-green opacity-50">#</span>
-                  <span className="text-white/80">scan --vulnerabilities</span>
-                </div>
-                <div className="pl-6 space-y-2">
-                  <div className="flex items-center gap-4">
-                    <div className="h-1.5 flex-1 bg-white/5 rounded-full overflow-hidden">
-                      <motion.div 
-                        initial={{ width: 0 }}
-                        animate={{ width: "95%" }}
-                        transition={{ duration: 2, delay: 1 }}
-                        className="h-full bg-cyber-green"
-                      />
+        <div className="relative hidden lg:block">
+          <AnimatePresence mode="wait">
+            {!showTerminal ? (
+              <motion.div
+                key="visual"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.5 }}
+                className="relative"
+              >
+                <div className="terminal-window cyber-glow border-cyber-green/20">
+                  <div className="terminal-header">
+                    <div className="flex gap-1.5">
+                      <div className="terminal-dot bg-cyber-red/50"></div>
+                      <div className="terminal-dot bg-yellow-500/50"></div>
+                      <div className="terminal-dot bg-cyber-green/50"></div>
                     </div>
-                    <span className="text-[10px] text-cyber-green">95% SECURE</span>
+                    <div className="flex-1 text-center">
+                      <span className="micro-label !text-white/20">root@anas-sec:~</span>
+                    </div>
+                  </div>
+                  <div className="p-8 font-mono text-xs space-y-6 min-h-[360px]">
+                    <div className="text-cyber-green/60 italic mb-4">
+                      {text}<span className="animate-pulse">|</span>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div className="flex gap-3">
+                        <span className="text-cyber-green opacity-50">#</span>
+                        <span className="text-white/80">fetch --identity</span>
+                      </div>
+                      <div className="pl-6 border-l border-white/5 space-y-1 text-gray-500">
+                        <div className="flex justify-between">
+                          <span>NAME:</span>
+                          <span className="text-white">{PERSONAL_INFO.name}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>ROLE:</span>
+                          <span className="text-white">{PERSONAL_INFO.title}</span>
+                        </div>
+                        <div className="flex justify-between">
+                          <span>LOC:</span>
+                          <span className="text-white">Dhaka, BD</span>
+                        </div>
+                      </div>
+
+                      <div className="flex gap-3">
+                        <span className="text-cyber-green opacity-50">#</span>
+                        <span className="text-white/80">scan --vulnerabilities</span>
+                      </div>
+                      <div className="pl-6 space-y-2">
+                        <div className="flex items-center gap-4">
+                          <div className="h-1.5 flex-1 bg-white/5 rounded-full overflow-hidden">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={{ width: "95%" }}
+                              transition={{ duration: 2, delay: 1 }}
+                              className="h-full bg-cyber-green"
+                            />
+                          </div>
+                          <span className="text-[10px] text-cyber-green">95% SECURE</span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <div className="flex gap-3 pt-4">
-                  <span className="text-cyber-green animate-pulse">_</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          {/* Hardware decorative elements */}
-          <div className="absolute -top-6 -right-6 w-24 h-24 border-t border-r border-cyber-green/20"></div>
-          <div className="absolute -bottom-6 -left-6 w-24 h-24 border-b border-l border-cyber-green/20"></div>
-          <div className="absolute top-1/2 -right-12 -translate-y-1/2 flex flex-col gap-2">
-            {[1, 2, 3].map(i => (
-              <div key={i} className="w-1 h-1 bg-cyber-green/30 rounded-full"></div>
-            ))}
-          </div>
-        </motion.div>
+                
+                {/* Hardware decorative elements */}
+                <div className="absolute -top-6 -right-6 w-24 h-24 border-t border-r border-cyber-green/20"></div>
+                <div className="absolute -bottom-6 -left-6 w-24 h-24 border-b border-l border-cyber-green/20"></div>
+              </motion.div>
+            ) : (
+              <InteractiveTerminal onClose={() => setShowTerminal(false)} />
+            )}
+          </AnimatePresence>
+        </div>
       </div>
     </section>
   );
@@ -242,41 +254,39 @@ export const Skills = () => (
     <div className="max-w-7xl mx-auto px-6">
       <SectionHeader title="Technical Arsenal" subtitle="Capabilities" number="01" />
       
-      <div className="grid lg:grid-cols-3 gap-8">
-        <div className="lg:col-span-2 grid md:grid-cols-2 gap-6">
-          {SKILLS.technical.map((skill, i) => (
-            <motion.div 
-              key={skill}
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ delay: i * 0.05 }}
-              viewport={{ once: true }}
-              className="cyber-card group"
-            >
-              <div className="flex items-center justify-between mb-4">
-                <div className="w-8 h-8 rounded-sm bg-white/5 flex items-center justify-center group-hover:bg-cyber-green/10 transition-colors">
-                  <Lock size={14} className="text-white/20 group-hover:text-cyber-green transition-colors" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Main Technical Skills - Bento Style */}
+        <div className="lg:col-span-2 lg:row-span-2 bg-cyber-gray/40 border border-white/5 p-8 rounded-sm group hover:border-cyber-green/30 transition-all relative overflow-hidden">
+          <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
+            <Shield size={120} />
+          </div>
+          <h3 className="text-2xl font-display font-bold mb-8 flex items-center gap-3">
+            <Lock className="text-cyber-green" size={24} />
+            Core Competencies
+          </h3>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {SKILLS.technical.map((skill, i) => (
+              <div key={skill} className="flex flex-col gap-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs text-white/60 font-mono">{skill}</span>
+                  <span className="text-[10px] text-cyber-green/40 font-mono">{(90 - i * 5)}%</span>
                 </div>
-                <span className="text-[9px] font-mono text-white/10 group-hover:text-cyber-green/30 transition-colors uppercase">Module_{i+1}</span>
+                <div className="h-1 bg-white/5 rounded-full overflow-hidden">
+                  <motion.div 
+                    initial={{ width: 0 }}
+                    whileInView={{ width: `${90 - i * 5}%` }}
+                    transition={{ duration: 1.5, delay: i * 0.1 }}
+                    className="h-full bg-cyber-green/40"
+                  />
+                </div>
               </div>
-              <h4 className="text-white font-mono text-sm group-hover:text-cyber-green transition-colors">{skill}</h4>
-              <div className="mt-4 h-0.5 w-full bg-white/5 overflow-hidden">
-                <motion.div 
-                  initial={{ x: "-100%" }}
-                  whileInView={{ x: "0%" }}
-                  transition={{ duration: 1, delay: i * 0.1 }}
-                  className="h-full bg-cyber-green/30"
-                />
-              </div>
-            </motion.div>
-          ))}
+            ))}
+          </div>
         </div>
 
-        <div className="bg-cyber-gray/60 border border-white/5 p-8 rounded-sm relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-4">
-            <TerminalIcon size={40} className="text-white/5" />
-          </div>
-          <h3 className="text-xl font-display font-bold mb-8 flex items-center gap-3">
+        {/* Tools Stack */}
+        <div className="lg:col-span-2 bg-cyber-gray/40 border border-white/5 p-8 rounded-sm group hover:border-cyber-blue/30 transition-all">
+          <h3 className="text-xl font-display font-bold mb-6 flex items-center gap-3">
             <Cpu className="text-cyber-blue" size={20} />
             Security Stack
           </h3>
@@ -286,23 +296,30 @@ export const Skills = () => (
                 key={tool}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.03 }}
-                viewport={{ once: true }}
+                transition={{ delay: i * 0.02 }}
                 className="px-3 py-1.5 bg-cyber-blue/5 border border-cyber-blue/10 text-cyber-blue text-[10px] font-mono rounded-sm hover:bg-cyber-blue/20 transition-all cursor-default uppercase tracking-wider"
               >
                 {tool}
               </motion.span>
             ))}
           </div>
-          
-          <div className="mt-12 pt-8 border-t border-white/5">
-            <div className="flex items-center justify-between mb-4">
-              <span className="micro-label">System Integrity</span>
-              <span className="text-[10px] font-mono text-cyber-green">99.9%</span>
-            </div>
-            <div className="h-1 bg-white/5 rounded-full overflow-hidden">
-              <div className="h-full w-[99.9%] bg-cyber-green"></div>
-            </div>
+        </div>
+
+        {/* System Stats - Decorative */}
+        <div className="bg-cyber-green/5 border border-cyber-green/10 p-8 rounded-sm flex flex-col justify-between group hover:bg-cyber-green/10 transition-all">
+          <Activity className="text-cyber-green mb-4" size={32} />
+          <div>
+            <div className="text-3xl font-display font-bold text-white mb-1">99.9%</div>
+            <div className="micro-label">Uptime_Guaranteed</div>
+          </div>
+        </div>
+
+        {/* Network Status - Decorative */}
+        <div className="bg-cyber-blue/5 border border-cyber-blue/10 p-8 rounded-sm flex flex-col justify-between group hover:bg-cyber-blue/10 transition-all">
+          <Globe className="text-cyber-blue mb-4" size={32} />
+          <div>
+            <div className="text-3xl font-display font-bold text-white mb-1">Global</div>
+            <div className="micro-label">Threat_Intelligence</div>
           </div>
         </div>
       </div>

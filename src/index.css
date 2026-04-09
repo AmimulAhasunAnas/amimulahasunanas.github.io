@@ -80,6 +80,18 @@
   .micro-label {
     @apply text-[10px] font-mono uppercase tracking-[0.3em] text-white/30;
   }
+
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-cyber-green/20 rounded-full hover:bg-cyber-green/40 transition-colors;
+  }
 }
 
 /* Custom scrollbar */
