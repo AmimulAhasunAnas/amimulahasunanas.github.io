@@ -21,17 +21,24 @@ export const MatrixBackground = () => {
     const drops: number[] = new Array(columns).fill(1);
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.05)';
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
       ctx.fillRect(0, 0, width, height);
 
-      ctx.fillStyle = '#00ff41';
-      ctx.font = `${fontSize}px monospace`;
+      ctx.fillStyle = '#00ff9d';
+      ctx.font = `${fontSize}px "JetBrains Mono"`;
 
       for (let i = 0; i < drops.length; i++) {
         const text = characters.charAt(Math.floor(Math.random() * characters.length));
-        ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+        const x = i * fontSize;
+        const y = drops[i] * fontSize;
 
-        if (drops[i] * fontSize > height && Math.random() > 0.975) {
+        // Add varying opacity for depth
+        const opacity = Math.random() * 0.5 + 0.1;
+        ctx.fillStyle = `rgba(0, 255, 157, ${opacity})`;
+        
+        ctx.fillText(text, x, y);
+
+        if (y > height && Math.random() > 0.975) {
           drops[i] = 0;
         }
         drops[i]++;

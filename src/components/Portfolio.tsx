@@ -57,43 +57,62 @@ export const Navbar = () => {
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${scrolled ? "bg-cyber-dark/90 backdrop-blur-xl border-b border-white/10 py-4" : "bg-transparent py-8"}`}>
+    <nav className={`fixed top-0 left-0 w-full z-[100] transition-all duration-500 ${scrolled ? "bg-cyber-dark/80 backdrop-blur-2xl border-b border-white/5 py-4" : "bg-transparent py-8"}`}>
       <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
         <motion.div 
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          className="flex items-center gap-3"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          className="flex items-center gap-4 group cursor-pointer"
         >
-          <div className="w-10 h-10 bg-cyber-green/10 border border-cyber-green/20 flex items-center justify-center rounded-sm">
-            <Shield className="text-cyber-green w-5 h-5" />
+          <div className="relative">
+            <div className="w-10 h-10 bg-cyber-green/10 border border-cyber-green/20 flex items-center justify-center rounded-sm group-hover:border-cyber-green/50 transition-colors">
+              <Shield className="text-cyber-green w-5 h-5 group-hover:scale-110 transition-transform" />
+            </div>
+            <div className="absolute -top-1 -right-1 w-2 h-2 bg-cyber-green rounded-full animate-pulse"></div>
           </div>
           <div className="flex flex-col">
-            <span className="font-display font-bold tracking-tighter text-white leading-none">ANAS.SEC</span>
-            <span className="text-[8px] font-mono text-cyber-green uppercase tracking-[0.2em] mt-1">Security Analyst</span>
+            <span className="font-display font-bold tracking-tighter text-white leading-none text-lg">ANAS<span className="text-cyber-green">.</span>SEC</span>
+            <span className="text-[7px] font-mono text-white/40 uppercase tracking-[0.4em] mt-1">Security_Node_v2.4</span>
           </div>
         </motion.div>
         
-        <div className="hidden lg:flex items-center gap-10">
-          {["About", "Skills", "Experience", "Projects", "Contact"].map((item) => (
-            <a 
+        <div className="hidden lg:flex items-center gap-12">
+          {["About", "Skills", "Experience", "Projects", "Contact"].map((item, i) => (
+            <motion.a 
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: i * 0.1 }}
               key={item} 
               href={`#${item.toLowerCase()}`}
-              className="text-[10px] font-mono uppercase tracking-[0.3em] text-white/40 hover:text-cyber-green transition-all duration-300 relative group"
+              className="text-[10px] font-mono uppercase tracking-[0.4em] text-white/40 hover:text-cyber-green transition-all duration-300 relative group"
             >
+              <span className="text-cyber-green/30 mr-2">0{i+1}</span>
               {item}
-              <span className="absolute -bottom-1 left-0 w-0 h-px bg-cyber-green transition-all duration-300 group-hover:w-full"></span>
-            </a>
+              <span className="absolute -bottom-1 left-0 w-0 h-px bg-cyber-green transition-all duration-300 group-hover:w-full shadow-[0_0_8px_rgba(0,255,157,0.5)]"></span>
+            </motion.a>
           ))}
         </div>
 
-        <div className="flex items-center gap-6">
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 bg-white/5 border border-white/10 rounded-sm">
-            <div className="w-1.5 h-1.5 rounded-full bg-cyber-green animate-pulse"></div>
-            <span className="text-[9px] font-mono text-white/50 uppercase tracking-widest">Network: Secure</span>
+        <div className="flex items-center gap-4">
+          <div className="hidden sm:flex items-center gap-3 px-4 py-2 bg-white/[0.02] border border-white/5 rounded-sm">
+            <div className="flex gap-1">
+              {[1, 2, 3].map(i => (
+                <div key={i} className={`w-1 h-3 rounded-full ${i === 3 ? 'bg-white/10' : 'bg-cyber-green/40'}`}></div>
+              ))}
+            </div>
+            <span className="text-[8px] font-mono text-white/30 uppercase tracking-[0.2em]">Signal: Stable</span>
           </div>
-          <a href="#contact" className="btn-cyber !py-2 !px-4">
+          <a 
+            href={PERSONAL_INFO.cvUrl} 
+            download="MD_AMIMUL_AHASUN_ANAS_CV.pdf"
+            className="hidden md:flex items-center gap-2 px-5 py-2 border border-cyber-green/30 text-cyber-green text-[9px] font-mono uppercase tracking-widest hover:bg-cyber-green hover:text-cyber-dark transition-all rounded-sm"
+          >
+            <Download size={12} />
+            CV_DL
+          </a>
+          <a href="#contact" className="btn-cyber !py-2 !px-5 !text-[9px]">
             <Zap size={14} />
-            <span className="hidden sm:inline">Connect</span>
+            Connect
           </a>
         </div>
       </div>
@@ -121,18 +140,33 @@ export const Hero = () => {
       <MatrixBackground />
       <div className="scanline"></div>
       
-      <div className="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-20 items-center">
+      {/* Decorative HUD Elements */}
+      <div className="absolute inset-0 pointer-events-none z-0 overflow-hidden">
+        <div className="absolute top-1/4 -left-20 w-96 h-96 bg-cyber-green/5 rounded-full blur-[120px]"></div>
+        <div className="absolute bottom-1/4 -right-20 w-96 h-96 bg-cyber-blue/5 rounded-full blur-[120px]"></div>
+        <div className="absolute top-0 left-0 w-full h-full cyber-grid opacity-20"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-6 relative z-10 grid lg:grid-cols-[1.2fr_0.8fr] gap-12 lg:gap-24 items-center">
         <motion.div
-          initial={{ opacity: 0, x: -30 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.8 }}
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
         >
-          <div className="inline-flex items-center gap-3 px-4 py-2 bg-cyber-green/5 border border-cyber-green/20 mb-8 rounded-sm">
-            <Activity size={14} className="text-cyber-green" />
-            <span className="text-cyber-green font-mono text-[10px] uppercase tracking-[0.3em]">Operational Status: Active</span>
-          </div>
+          <motion.div 
+            initial={{ opacity: 0, x: -20 }}
+            animate={{ opacity: 1, x: 0 }}
+            transition={{ delay: 0.5 }}
+            className="inline-flex items-center gap-3 px-4 py-2 bg-white/[0.03] border border-white/10 mb-10 rounded-sm"
+          >
+            <div className="relative">
+              <Activity size={14} className="text-cyber-green" />
+              <div className="absolute inset-0 bg-cyber-green blur-sm opacity-50 animate-pulse"></div>
+            </div>
+            <span className="text-cyber-green font-mono text-[9px] uppercase tracking-[0.4em]">Operational Status: Active</span>
+          </motion.div>
           
-          <h1 className="text-6xl md:text-8xl lg:text-9xl font-display font-bold mb-8 leading-[0.85] tracking-tighter text-white">
+          <h1 className="text-[clamp(3rem,10vw,8rem)] font-display font-bold mb-10 leading-[0.85] tracking-tighter text-white">
             {PERSONAL_INFO.name.split(' ').map((word, i) => (
               <span key={i} className={i >= 2 ? "text-cyber-green block glitch-hover" : "block glitch-hover"}>
                 {word}
@@ -140,29 +174,45 @@ export const Hero = () => {
             ))}
           </h1>
           
-          <p className="text-xl text-gray-400 max-w-xl mb-12 font-light leading-relaxed border-l-2 border-white/10 pl-6">
+          <motion.p 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.8 }}
+            className="text-lg md:text-xl text-gray-400 max-w-xl mb-14 font-light leading-relaxed border-l border-white/10 pl-8"
+          >
             {PERSONAL_INFO.profile}
-          </p>
+          </motion.p>
           
-          <div className="flex flex-wrap gap-6 items-center">
-            <a href="#projects" className="btn-cyber">
+          <div className="flex flex-wrap gap-8 items-center">
+            <motion.a 
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              href="#projects" 
+              className="btn-cyber"
+            >
               <Eye size={16} />
               View Operations
-            </a>
-            <button 
-              onClick={() => setShowTerminal(true)}
-              className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-[0.3em] text-white/40 hover:text-cyber-green transition-all group"
-            >
-              <Command size={14} className="group-hover:rotate-12 transition-transform" />
-              Open Terminal
-            </button>
-            <div className="flex items-center gap-6 ml-auto">
-              <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="text-white/30 hover:text-cyber-green transition-all duration-300 hover:scale-110">
-                <Linkedin size={22} />
-              </a>
-              <a href={`mailto:${PERSONAL_INFO.email}`} className="text-white/30 hover:text-cyber-green transition-all duration-300 hover:scale-110">
-                <Mail size={22} />
-              </a>
+            </motion.a>
+            
+            <div className="flex items-center gap-8">
+              <button 
+                onClick={() => setShowTerminal(true)}
+                className="flex items-center gap-3 text-[10px] font-mono uppercase tracking-[0.4em] text-white/40 hover:text-cyber-green transition-all group"
+              >
+                <Command size={14} className="group-hover:rotate-12 transition-transform" />
+                Terminal_Access
+              </button>
+              
+              <div className="h-8 w-px bg-white/10"></div>
+              
+              <div className="flex items-center gap-6">
+                <a href={PERSONAL_INFO.linkedin} target="_blank" rel="noreferrer" className="text-white/20 hover:text-cyber-green transition-all duration-300 hover:-translate-y-1">
+                  <Linkedin size={20} />
+                </a>
+                <a href={`mailto:${PERSONAL_INFO.email}`} className="text-white/20 hover:text-cyber-green transition-all duration-300 hover:-translate-y-1">
+                  <Mail size={20} />
+                </a>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -172,72 +222,98 @@ export const Hero = () => {
             {!showTerminal ? (
               <motion.div
                 key="visual"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5 }}
-                className="relative"
+                initial={{ opacity: 0, scale: 0.9, rotateY: 20 }}
+                animate={{ opacity: 1, scale: 1, rotateY: 0 }}
+                exit={{ opacity: 0, scale: 0.9, rotateY: -20 }}
+                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                className="relative perspective-1000"
               >
-                <div className="terminal-window cyber-glow border-cyber-green/20">
+                <div className="terminal-window cyber-glow border-cyber-green/20 relative z-10">
                   <div className="terminal-header">
-                    <div className="flex gap-1.5">
-                      <div className="terminal-dot bg-cyber-red/50"></div>
-                      <div className="terminal-dot bg-yellow-500/50"></div>
-                      <div className="terminal-dot bg-cyber-green/50"></div>
+                    <div className="flex gap-2">
+                      <div className="terminal-dot bg-cyber-red/40"></div>
+                      <div className="terminal-dot bg-yellow-500/40"></div>
+                      <div className="terminal-dot bg-cyber-green/40"></div>
                     </div>
                     <div className="flex-1 text-center">
-                      <span className="micro-label !text-white/20">root@anas-sec:~</span>
+                      <span className="micro-label !text-white/20">system_monitor.exe</span>
                     </div>
                   </div>
-                  <div className="p-8 font-mono text-xs space-y-6 min-h-[360px]">
-                    <div className="text-cyber-green/60 italic mb-4">
-                      {text}<span className="animate-pulse">|</span>
+                  <div className="p-10 font-mono text-[11px] space-y-8 min-h-[420px] bg-black/20">
+                    <div className="text-cyber-green/60 italic leading-relaxed">
+                      {text}<span className="inline-block w-2 h-4 bg-cyber-green ml-1 animate-pulse"></span>
                     </div>
                     
-                    <div className="space-y-4">
-                      <div className="flex gap-3">
-                        <span className="text-cyber-green opacity-50">#</span>
-                        <span className="text-white/80">fetch --identity</span>
+                    <div className="space-y-6">
+                      <div className="flex gap-4 items-center">
+                        <span className="text-cyber-green/30">01</span>
+                        <span className="text-white/60 uppercase tracking-widest">Identity_Check</span>
+                        <div className="h-px flex-1 bg-white/5"></div>
                       </div>
-                      <div className="pl-6 border-l border-white/5 space-y-1 text-gray-500">
-                        <div className="flex justify-between">
-                          <span>NAME:</span>
-                          <span className="text-white">{PERSONAL_INFO.name}</span>
+                      <div className="pl-8 space-y-2 text-gray-500">
+                        <div className="flex justify-between border-b border-white/5 pb-1">
+                          <span>SUBJECT:</span>
+                          <span className="text-white font-medium">{PERSONAL_INFO.name}</span>
                         </div>
-                        <div className="flex justify-between">
-                          <span>ROLE:</span>
-                          <span className="text-white">{PERSONAL_INFO.title}</span>
-                        </div>
-                        <div className="flex justify-between">
-                          <span>LOC:</span>
-                          <span className="text-white">Dhaka, BD</span>
+                        <div className="flex justify-between border-b border-white/5 pb-1">
+                          <span>DESIGNATION:</span>
+                          <span className="text-white font-medium">{PERSONAL_INFO.title}</span>
                         </div>
                       </div>
 
-                      <div className="flex gap-3">
-                        <span className="text-cyber-green opacity-50">#</span>
-                        <span className="text-white/80">scan --vulnerabilities</span>
+                      <div className="flex gap-4 items-center">
+                        <span className="text-cyber-green/30">02</span>
+                        <span className="text-white/60 uppercase tracking-widest">Security_Scan</span>
+                        <div className="h-px flex-1 bg-white/5"></div>
                       </div>
-                      <div className="pl-6 space-y-2">
-                        <div className="flex items-center gap-4">
-                          <div className="h-1.5 flex-1 bg-white/5 rounded-full overflow-hidden">
+                      <div className="pl-8 space-y-4">
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-[9px] uppercase tracking-widest">
+                            <span className="text-white/40">Firewall_Integrity</span>
+                            <span className="text-cyber-green">98%</span>
+                          </div>
+                          <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
                             <motion.div 
                               initial={{ width: 0 }}
-                              animate={{ width: "95%" }}
+                              animate={{ width: "98%" }}
                               transition={{ duration: 2, delay: 1 }}
-                              className="h-full bg-cyber-green"
+                              className="h-full bg-cyber-green shadow-[0_0_10px_rgba(0,255,157,0.5)]"
                             />
                           </div>
-                          <span className="text-[10px] text-cyber-green">95% SECURE</span>
+                        </div>
+                        <div className="space-y-2">
+                          <div className="flex justify-between text-[9px] uppercase tracking-widest">
+                            <span className="text-white/40">Threat_Neutralization</span>
+                            <span className="text-cyber-blue">94%</span>
+                          </div>
+                          <div className="h-1 w-full bg-white/5 rounded-full overflow-hidden">
+                            <motion.div 
+                              initial={{ width: 0 }}
+                              animate={{ width: "94%" }}
+                              transition={{ duration: 2, delay: 1.2 }}
+                              className="h-full bg-cyber-blue shadow-[0_0_10px_rgba(0,210,255,0.5)]"
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
                 
-                {/* Hardware decorative elements */}
-                <div className="absolute -top-6 -right-6 w-24 h-24 border-t border-r border-cyber-green/20"></div>
-                <div className="absolute -bottom-6 -left-6 w-24 h-24 border-b border-l border-cyber-green/20"></div>
+                {/* HUD Decorative Overlays */}
+                <div className="absolute -top-10 -right-10 w-40 h-40 border-t-2 border-r-2 border-cyber-green/10 rounded-tr-3xl pointer-events-none"></div>
+                <div className="absolute -bottom-10 -left-10 w-40 h-40 border-b-2 border-l-2 border-cyber-green/10 rounded-bl-3xl pointer-events-none"></div>
+                <div className="absolute top-1/2 -right-20 transform -translate-y-1/2 flex flex-col gap-4">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="w-12 h-1 bg-white/5 rounded-full">
+                      <motion.div 
+                        animate={{ x: [0, 40, 0] }}
+                        transition={{ duration: 3, delay: i * 0.5, repeat: Infinity }}
+                        className="w-4 h-full bg-cyber-green/20 rounded-full"
+                      />
+                    </div>
+                  ))}
+                </div>
               </motion.div>
             ) : (
               <InteractiveTerminal onClose={() => setShowTerminal(false)} />
@@ -254,191 +330,217 @@ export const Skills = () => (
     <div className="max-w-7xl mx-auto px-6">
       <SectionHeader title="Technical Arsenal" subtitle="Capabilities" number="01" />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {/* Main Technical Skills - Bento Style */}
-        <div className="lg:col-span-2 lg:row-span-2 bg-cyber-gray/40 border border-white/5 p-8 rounded-sm group hover:border-cyber-green/30 transition-all relative overflow-hidden">
-          <div className="absolute top-0 right-0 p-6 opacity-5 group-hover:opacity-10 transition-opacity">
-            <Shield size={120} />
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        {/* Main Technical Skills - Large Bento Card */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="md:col-span-2 lg:col-span-2 lg:row-span-2 cyber-card group relative overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 p-8 opacity-5 group-hover:opacity-10 transition-opacity">
+            <Shield size={160} />
           </div>
-          <h3 className="text-2xl font-display font-bold mb-8 flex items-center gap-3">
-            <Lock className="text-cyber-green" size={24} />
+          <h3 className="text-2xl font-display font-bold mb-10 flex items-center gap-4">
+            <div className="w-10 h-10 bg-cyber-green/10 flex items-center justify-center rounded-sm">
+              <Lock className="text-cyber-green" size={20} />
+            </div>
             Core Competencies
           </h3>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-12 gap-y-8">
             {SKILLS.technical.map((skill, i) => (
-              <div key={skill} className="flex flex-col gap-2">
+              <div key={skill} className="space-y-3">
                 <div className="flex items-center justify-between">
-                  <span className="text-xs text-white/60 font-mono">{skill}</span>
-                  <span className="text-[10px] text-cyber-green/40 font-mono">{(90 - i * 5)}%</span>
+                  <span className="text-xs text-white/70 font-mono tracking-tight">{skill}</span>
+                  <span className="text-[10px] text-cyber-green font-mono">{(95 - i * 3)}%</span>
                 </div>
                 <div className="h-1 bg-white/5 rounded-full overflow-hidden">
                   <motion.div 
                     initial={{ width: 0 }}
-                    whileInView={{ width: `${90 - i * 5}%` }}
+                    whileInView={{ width: `${95 - i * 3}%` }}
                     transition={{ duration: 1.5, delay: i * 0.1 }}
-                    className="h-full bg-cyber-green/40"
+                    className="h-full bg-cyber-green shadow-[0_0_10px_rgba(0,255,157,0.3)]"
                   />
                 </div>
               </div>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        {/* Tools Stack */}
-        <div className="lg:col-span-2 bg-cyber-gray/40 border border-white/5 p-8 rounded-sm group hover:border-cyber-blue/30 transition-all">
-          <h3 className="text-xl font-display font-bold mb-6 flex items-center gap-3">
-            <Cpu className="text-cyber-blue" size={20} />
+        {/* Tools - Bento Card */}
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2 }}
+          className="lg:col-span-2 cyber-card group"
+        >
+          <h3 className="text-xl font-display font-bold mb-8 flex items-center gap-4">
+            <div className="w-10 h-10 bg-cyber-blue/10 flex items-center justify-center rounded-sm">
+              <Cpu className="text-cyber-blue" size={20} />
+            </div>
             Security Stack
           </h3>
-          <div className="flex flex-wrap gap-2">
+          <div className="flex flex-wrap gap-3">
             {SKILLS.tools.map((tool, i) => (
               <motion.span 
                 key={tool}
                 initial={{ opacity: 0, scale: 0.9 }}
                 whileInView={{ opacity: 1, scale: 1 }}
-                transition={{ delay: i * 0.02 }}
-                className="px-3 py-1.5 bg-cyber-blue/5 border border-cyber-blue/10 text-cyber-blue text-[10px] font-mono rounded-sm hover:bg-cyber-blue/20 transition-all cursor-default uppercase tracking-wider"
+                transition={{ delay: i * 0.05 }}
+                className="px-4 py-2 bg-white/[0.03] border border-white/5 text-[10px] font-mono text-white/60 uppercase tracking-widest rounded-sm hover:border-cyber-blue/40 hover:text-cyber-blue transition-all cursor-default"
               >
                 {tool}
               </motion.span>
             ))}
           </div>
-        </div>
+        </motion.div>
 
         {/* System Stats - Decorative */}
-        <div className="bg-cyber-green/5 border border-cyber-green/10 p-8 rounded-sm flex flex-col justify-between group hover:bg-cyber-green/10 transition-all">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="bg-cyber-green/5 border border-cyber-green/10 p-8 rounded-sm flex flex-col justify-between group hover:bg-cyber-green/10 transition-all"
+        >
           <Activity className="text-cyber-green mb-4" size={32} />
           <div>
             <div className="text-3xl font-display font-bold text-white mb-1">99.9%</div>
             <div className="micro-label">Uptime_Guaranteed</div>
           </div>
-        </div>
+        </motion.div>
 
         {/* Network Status - Decorative */}
-        <div className="bg-cyber-blue/5 border border-cyber-blue/10 p-8 rounded-sm flex flex-col justify-between group hover:bg-cyber-blue/10 transition-all">
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.4 }}
+          className="bg-cyber-blue/5 border border-cyber-blue/10 p-8 rounded-sm flex flex-col justify-between group hover:bg-cyber-blue/10 transition-all"
+        >
           <Globe className="text-cyber-blue mb-4" size={32} />
           <div>
             <div className="text-3xl font-display font-bold text-white mb-1">Global</div>
             <div className="micro-label">Threat_Intelligence</div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </div>
   </section>
 );
 
 export const Experience = () => (
-  <section id="experience" className="py-32 bg-cyber-gray/20">
+  <section id="experience" className="py-32 relative overflow-hidden">
     <div className="max-w-7xl mx-auto px-6">
       <SectionHeader title="Operational History" subtitle="Experience" number="02" />
       
-      <div className="relative">
-        <div className="absolute left-0 md:left-1/2 top-0 bottom-0 w-px bg-white/5 -translate-x-1/2 hidden md:block"></div>
+      <div className="space-y-12 relative">
+        <div className="absolute left-0 top-0 w-px h-full bg-gradient-to-b from-cyber-green/40 via-white/5 to-transparent hidden md:block"></div>
         
-        <div className="space-y-20">
-          {EXPERIENCE.map((exp, i) => (
-            <motion.div 
-              key={exp.company}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className={`relative flex flex-col md:flex-row gap-12 ${i % 2 === 0 ? "md:flex-row-reverse" : ""}`}
-            >
-              <div className="md:w-1/2 flex flex-col justify-center">
-                <div className={`flex flex-col ${i % 2 === 0 ? "md:items-start" : "md:items-end"}`}>
-                  <span className="text-cyber-green font-mono text-xs mb-2 tracking-[0.2em]">{exp.period}</span>
-                  <h3 className="text-2xl font-display font-bold text-white mb-1">{exp.role}</h3>
-                  <span className="text-white/40 font-mono text-[10px] uppercase tracking-widest mb-6">{exp.company}</span>
-                </div>
+        {EXPERIENCE.map((exp, i) => (
+          <motion.div 
+            key={exp.company}
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.2 }}
+            className="relative md:pl-16 group"
+          >
+            <div className="absolute left-0 top-2 w-3 h-3 bg-cyber-green rounded-full -translate-x-1/2 hidden md:block shadow-[0_0_15px_rgba(0,255,157,0.8)] group-hover:scale-150 transition-transform"></div>
+            
+            <div className="cyber-card !p-12 relative overflow-hidden">
+              <div className="absolute top-0 right-0 p-12 opacity-[0.02] group-hover:opacity-[0.05] transition-opacity">
+                <Briefcase size={160} />
               </div>
-
-              <div className="absolute left-0 md:left-1/2 top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-cyber-dark border-2 border-cyber-green rounded-full z-10 hidden md:block"></div>
-
-              <div className="md:w-1/2">
-                <div className="cyber-card !p-8 relative group">
-                  <div className="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                    <Activity size={16} className="text-cyber-green animate-pulse" />
+              
+              <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 mb-12">
+                <div>
+                  <span className="micro-label mb-3 block text-cyber-green">{exp.period}</span>
+                  <h3 className="text-4xl font-display font-bold text-white group-hover:text-cyber-green transition-colors leading-tight">{exp.role}</h3>
+                  <div className="flex items-center gap-4 mt-3">
+                    <div className="flex items-center gap-2 px-3 py-1 bg-cyber-blue/10 border border-cyber-blue/20 rounded-sm">
+                      <Globe size={12} className="text-cyber-blue" />
+                      <span className="text-[10px] font-mono text-cyber-blue uppercase tracking-widest">{exp.company}</span>
+                    </div>
                   </div>
-                  <ul className="space-y-4">
-                    {exp.highlights.map((item, idx) => (
-                      <li key={idx} className="flex gap-4 text-sm text-gray-400 leading-relaxed">
-                        <ChevronRight size={16} className="text-cyber-green shrink-0 mt-0.5" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
+                </div>
+                <div className="px-5 py-2 bg-white/[0.03] border border-white/10 rounded-sm self-start">
+                  <span className="text-[10px] font-mono text-white/30 uppercase tracking-[0.3em]">Status: Verified</span>
                 </div>
               </div>
-            </motion.div>
-          ))}
-        </div>
+              
+              <ul className="grid grid-cols-1 lg:grid-cols-2 gap-x-16 gap-y-6">
+                {exp.highlights.map((highlight, j) => (
+                  <li key={j} className="flex gap-5 text-[15px] text-gray-400 leading-relaxed group/item">
+                    <ChevronRight size={18} className="text-cyber-green mt-1 shrink-0 group-hover/item:translate-x-1 transition-transform" />
+                    <span>{highlight}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </div>
   </section>
 );
 
 export const Projects = () => (
-  <section id="projects" className="py-32">
+  <section id="projects" className="py-32 relative bg-white/[0.01]">
     <div className="max-w-7xl mx-auto px-6">
-      <SectionHeader title="Critical Projects" subtitle="Operations" number="03" />
+      <SectionHeader title="Active Operations" subtitle="Portfolio" number="03" />
       
-      <div className="grid lg:grid-cols-2 gap-10">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-10">
         {PROJECTS.map((project, i) => (
           <motion.div 
             key={project.title}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: i * 0.1 }}
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true }}
-            className="group relative"
+            transition={{ delay: i * 0.1 }}
+            className="cyber-card group relative overflow-hidden flex flex-col !p-12"
           >
-            <div className="absolute inset-0 bg-cyber-green/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-sm"></div>
-            <div className="cyber-card h-full relative z-10 !p-10 flex flex-col">
-              <div className="flex justify-between items-start mb-8">
-                <div className="w-12 h-12 bg-white/5 flex items-center justify-center rounded-sm group-hover:bg-cyber-green/10 transition-all duration-500">
-                  <Code className="text-white/20 group-hover:text-cyber-green transition-colors" size={24} />
-                </div>
-                <div className="flex flex-col items-end">
-                  <span className="micro-label !text-white/10">Project_ID</span>
-                  <span className="text-[10px] font-mono text-cyber-green/50">#00{i+1}</span>
-                </div>
-              </div>
-
-              <h3 className="text-2xl font-display font-bold mb-4 group-hover:text-cyber-green transition-colors">
-                {project.title}
-              </h3>
-              
-              <p className="text-gray-400 text-sm leading-relaxed mb-8 flex-grow">
-                {project.description}
-              </p>
-              
-              {project.impact && (
-                <div className="space-y-4 mb-8">
-                  <span className="micro-label">Mission Impact</span>
-                  <div className="grid gap-2">
-                    {project.impact.map((imp, idx) => (
-                      <div key={idx} className="flex items-center gap-3 text-[11px] text-cyber-blue/80 bg-cyber-blue/5 p-3 border border-cyber-blue/10 rounded-sm">
-                        <Zap size={12} className="text-cyber-blue" />
-                        {imp}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              <div className="flex flex-wrap gap-2 mt-auto">
-                {project.tools?.map(tool => (
-                  <span key={tool} className="text-[9px] font-mono px-2.5 py-1 bg-white/5 text-white/40 rounded-sm uppercase tracking-wider">
-                    {tool}
-                  </span>
-                ))}
-              </div>
+            <div className="absolute top-0 right-0 p-12 opacity-[0.03] group-hover:opacity-[0.08] transition-opacity">
+              <Activity size={160} />
             </div>
             
-            {/* Corner accents */}
-            <div className="absolute top-0 left-0 w-2 h-2 border-t border-l border-cyber-green opacity-0 group-hover:opacity-100 transition-opacity"></div>
-            <div className="absolute bottom-0 right-0 w-2 h-2 border-b border-r border-cyber-green opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            <div className="mb-10">
+              <div className="flex justify-between items-start mb-4">
+                <span className="micro-label text-cyber-green">{project.period}</span>
+                <span className="text-[10px] font-mono text-white/10 uppercase tracking-widest">OP_ID: #00{i+1}</span>
+              </div>
+              <h3 className="text-3xl font-display font-bold text-white mb-6 group-hover:text-cyber-green transition-colors leading-tight">{project.title}</h3>
+              <p className="text-base text-gray-400 leading-relaxed mb-10 border-l-2 border-cyber-green/20 pl-8">
+                {project.description}
+              </p>
+            </div>
+
+            {project.impact && (
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-10">
+                {project.impact.map((item, j) => (
+                  <div key={j} className="p-5 bg-white/[0.03] border border-white/5 rounded-sm group/stat hover:bg-white/[0.05] transition-all">
+                    <div className="text-cyber-green font-mono text-xl font-bold mb-2 group-hover/stat:scale-110 transition-transform origin-left">
+                      {item.match(/\d+%/)?.[0] || "100%"}
+                    </div>
+                    <div className="text-[9px] font-mono text-white/30 uppercase tracking-[0.2em] leading-tight">
+                      {item.replace(/\d+%/, "").trim()}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+
+            <div className="mt-auto pt-10 border-t border-white/5 flex items-center justify-between">
+              <div className="flex flex-wrap gap-4">
+                {project.tools?.map(tool => (
+                  <span key={tool} className="text-[10px] font-mono text-white/20 uppercase tracking-[0.2em]">{tool}</span>
+                ))}
+              </div>
+              <a href="#" className="w-10 h-10 bg-white/5 border border-white/10 flex items-center justify-center rounded-full text-cyber-green hover:bg-cyber-green hover:text-cyber-dark transition-all">
+                <ExternalLink size={18} />
+              </a>
+            </div>
           </motion.div>
         ))}
       </div>
@@ -507,85 +609,155 @@ export const Education = () => (
 );
 
 export const Contact = () => (
-  <section id="contact" className="py-32 relative overflow-hidden bg-cyber-gray/20">
-    <div className="absolute top-0 left-0 w-full h-full cyber-grid opacity-20"></div>
-    <div className="max-w-4xl mx-auto px-6 relative z-10">
+  <section id="contact" className="py-32 relative overflow-hidden">
+    <div className="absolute inset-0 bg-cyber-green/[0.02] pointer-events-none"></div>
+    <div className="max-w-7xl mx-auto px-6 relative z-10">
       <SectionHeader title="Establish Connection" subtitle="Contact" number="06" />
       
-      <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-12 items-center">
-        <div className="space-y-8">
-          <p className="text-gray-400 text-lg font-light leading-relaxed">
-            Ready to contribute to challenging and innovative security environments. Let's discuss how I can help secure your infrastructure.
+      <div className="grid lg:grid-cols-2 gap-24 items-center">
+        <motion.div
+          initial={{ opacity: 0, x: -30 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+        >
+          <h3 className="text-5xl font-display font-bold text-white mb-8 leading-tight">
+            Ready to secure <span className="text-cyber-green">critical</span> infrastructure.
+          </h3>
+          <p className="text-gray-400 text-xl font-light leading-relaxed mb-12">
+            Available for strategic security roles where analytical precision and proactive defense are paramount.
           </p>
           
-          <div className="space-y-4">
+          <div className="grid gap-6">
             {[
-              { icon: Mail, label: "Email", value: PERSONAL_INFO.email, href: `mailto:${PERSONAL_INFO.email}`, color: "cyber-green" },
-              { icon: Phone, label: "Mobile", value: PERSONAL_INFO.mobile, href: `tel:${PERSONAL_INFO.mobile}`, color: "cyber-blue" },
-              { icon: Linkedin, label: "LinkedIn", value: "View Profile", href: PERSONAL_INFO.linkedin, color: "white" }
+              { icon: Mail, label: "Secure_Email", value: PERSONAL_INFO.email, href: `mailto:${PERSONAL_INFO.email}`, color: "cyber-green" },
+              { icon: Phone, label: "Direct_Line", value: PERSONAL_INFO.mobile, href: `tel:${PERSONAL_INFO.mobile}`, color: "cyber-blue" },
+              { icon: Linkedin, label: "Network_Node", value: "LinkedIn Profile", href: PERSONAL_INFO.linkedin, color: "white" }
             ].map((item, i) => (
               <a 
                 key={i}
                 href={item.href}
                 target={item.icon === Linkedin ? "_blank" : undefined}
                 rel={item.icon === Linkedin ? "noreferrer" : undefined}
-                className="flex items-center gap-6 p-4 bg-white/5 border border-white/5 hover:border-white/20 transition-all group"
+                className="flex items-center gap-8 p-6 glass-card group hover:bg-white/[0.05] transition-all"
               >
-                <div className={`w-12 h-12 rounded-sm bg-white/5 flex items-center justify-center group-hover:bg-${item.color}/10 transition-colors`}>
-                  <item.icon className={`text-white/20 group-hover:text-white transition-colors`} size={20} />
+                <div className={`w-14 h-14 rounded-full bg-white/5 flex items-center justify-center group-hover:bg-${item.color}/10 transition-all duration-500`}>
+                  <item.icon className={`text-white/20 group-hover:text-white transition-all duration-500`} size={24} />
                 </div>
                 <div>
-                  <span className="micro-label !text-white/20">{item.label}</span>
-                  <span className="text-sm font-mono text-white block mt-0.5">{item.value}</span>
+                  <span className="micro-label !text-white/20 mb-1 block">{item.label}</span>
+                  <span className="text-lg font-mono text-white group-hover:text-cyber-green transition-colors">{item.value}</span>
                 </div>
               </a>
             ))}
           </div>
-        </div>
+        </motion.div>
 
-        <div className="hidden lg:block w-px h-64 bg-white/5"></div>
-
-        <div className="flex flex-col items-center justify-center text-center">
-          <div className="w-32 h-32 rounded-full border-2 border-dashed border-cyber-green/20 flex items-center justify-center mb-8 relative">
-            <div className="absolute inset-0 border-2 border-cyber-green rounded-full animate-[spin_10s_linear_infinite] border-t-transparent border-r-transparent"></div>
-            <Shield size={48} className="text-cyber-green" />
-          </div>
-          <h3 className="text-xl font-display font-bold text-white mb-6">Secure Transmission</h3>
-          <a 
-            href={PERSONAL_INFO.cvUrl} 
-            download="MD_AMIMUL_AHASUN_ANAS_CV.pdf"
-            className="btn-cyber w-full group"
-          >
-            <Download size={16} className="group-hover:translate-y-0.5 transition-transform" />
-            Download CV
-          </a>
-          <span className="mt-6 micro-label">Verification: AES-256</span>
-        </div>
-      </div>
-      
-      <footer className="mt-32 pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-8">
-        <div className="flex flex-col gap-2">
-          <span className="text-[10px] font-mono text-white/20 uppercase tracking-[0.3em]">
-            &copy; 2026 MD. AMIMUL AHASUN ANAS
-          </span>
-          <span className="text-[8px] font-mono text-white/10 uppercase tracking-[0.2em]">
-            Digital Signature: 0x7F4A...B2E1
-          </span>
-        </div>
-        
-        <div className="flex gap-8">
-          {[
-            { label: "Status", value: "Secure", color: "cyber-green" },
-            { label: "Latency", value: "12ms", color: "cyber-blue" },
-            { label: "Uptime", value: "99.9%", color: "white" }
-          ].map(stat => (
-            <div key={stat.label} className="flex flex-col items-end">
-              <span className="text-[8px] font-mono text-white/10 uppercase tracking-widest">{stat.label}</span>
-              <span className={`text-[10px] font-mono text-${stat.color} uppercase`}>{stat.value}</span>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          className="relative"
+        >
+          <div className="cyber-card !p-16 flex flex-col items-center text-center relative z-10">
+            <div className="w-48 h-48 rounded-full border border-cyber-green/20 flex items-center justify-center mb-12 relative">
+              <div className="absolute inset-0 border-2 border-cyber-green rounded-full animate-[spin_15s_linear_infinite] border-t-transparent border-r-transparent opacity-40"></div>
+              <div className="absolute inset-4 border border-cyber-blue/20 rounded-full animate-[spin_10s_linear_reverse_infinite] border-b-transparent border-l-transparent"></div>
+              <Shield size={64} className="text-cyber-green drop-shadow-[0_0_15px_rgba(0,255,157,0.5)]" />
             </div>
-          ))}
-        </div>
-      </footer>
+            
+            <h4 className="text-2xl font-display font-bold text-white mb-4 uppercase tracking-tighter">Transmission_Ready</h4>
+            <p className="text-sm text-white/40 font-mono uppercase tracking-[0.2em] mb-10">Verification: AES-256_ENCRYPTED</p>
+            
+            <a 
+              href={PERSONAL_INFO.cvUrl} 
+              download="MD_AMIMUL_AHASUN_ANAS_CV.pdf"
+              className="btn-cyber w-full group !py-4"
+            >
+              <Download size={20} className="group-hover:translate-y-1 transition-transform" />
+              Download_Full_CV
+            </a>
+          </div>
+          
+          {/* Decorative background elements */}
+          <div className="absolute -top-20 -right-20 w-64 h-64 bg-cyber-green/5 rounded-full blur-[100px] pointer-events-none"></div>
+          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-cyber-blue/5 rounded-full blur-[100px] pointer-events-none"></div>
+        </motion.div>
+      </div>
     </div>
   </section>
 );
+
+export const Footer = () => (
+  <footer className="py-12 border-t border-white/5 bg-cyber-dark relative overflow-hidden">
+    <div className="max-w-7xl mx-auto px-6 relative z-10">
+      <div className="flex flex-col md:flex-row justify-between items-center gap-12">
+        <div className="flex flex-col gap-3">
+          <div className="flex items-center gap-3">
+            <div className="w-8 h-8 bg-cyber-green/10 flex items-center justify-center rounded-sm">
+              <Shield className="text-cyber-green" size={16} />
+            </div>
+            <span className="text-xl font-display font-bold tracking-tighter text-white">
+              ANAS<span className="text-cyber-green">.</span>SEC
+            </span>
+          </div>
+          <p className="text-[10px] font-mono text-white/20 uppercase tracking-[0.3em]">
+            &copy; 2026 MD. AMIMUL AHASUN ANAS | ALL RIGHTS RESERVED
+          </p>
+        </div>
+
+        <div className="flex gap-12">
+          {[
+            { label: "System_Status", value: "Operational", color: "cyber-green" },
+            { label: "Encryption", value: "AES-256", color: "cyber-blue" },
+            { label: "Location", value: "Dhaka, BD", color: "white" }
+          ].map(stat => (
+            <div key={stat.label} className="flex flex-col items-center md:items-end">
+              <span className="text-[8px] font-mono text-white/10 uppercase tracking-[0.2em] mb-1">{stat.label}</span>
+              <span className={`text-[10px] font-mono text-${stat.color} uppercase tracking-widest`}>{stat.value}</span>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex gap-6">
+          {[Linkedin, Mail, Globe].map((Icon, i) => (
+            <a 
+              key={i} 
+              href="#" 
+              className="w-10 h-10 rounded-full border border-white/5 flex items-center justify-center text-white/20 hover:text-cyber-green hover:border-cyber-green/30 transition-all"
+            >
+              <Icon size={18} />
+            </a>
+          ))}
+        </div>
+      </div>
+      
+      <div className="mt-12 pt-8 border-t border-white/[0.02] flex justify-center">
+        <div className="text-[8px] font-mono text-white/5 uppercase tracking-[0.5em]">
+          Digital_Signature: 0x7F4A92B1C3E5D7F8A0B2C4D6E8F0A2B4
+        </div>
+      </div>
+    </div>
+    
+    {/* Decorative blur */}
+    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-cyber-green/20 to-transparent"></div>
+  </footer>
+);
+
+export default function Portfolio() {
+  return (
+    <div className="min-h-screen bg-cyber-dark text-white selection:bg-cyber-green selection:text-cyber-dark">
+      <CustomCursor />
+      <Navbar />
+      <main>
+        <Hero />
+        <Skills />
+        <Experience />
+        <Projects />
+        <Certifications />
+        <Education />
+        <Contact />
+      </main>
+      <Footer />
+    </div>
+  );
+}
