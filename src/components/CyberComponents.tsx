@@ -2,13 +2,10 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Terminal as TerminalIcon, X, Minimize2, Maximize2, ChevronRight } from 'lucide-react';
 
-export const MatrixBackground = ({ color = '#00ff9d' }: { color?: string }) => {
+export const MatrixBackground = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const colorRef = useRef(color);
-
-  useEffect(() => {
-    colorRef.current = color;
-  }, [color]);
+  const colorRef = useRef('#00ff9d');
+  const colors = ['#00ff9d', '#00d4ff', '#ff0055', '#ffcc00', '#9d00ff'];
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -21,57 +18,33 @@ export const MatrixBackground = ({ color = '#00ff9d' }: { color?: string }) => {
     let height = (canvas.height = window.innerHeight);
 
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?/\\';
-    const fontSize = 16;
+    const fontSize = 14;
     const columns = Math.floor(width / fontSize);
     const drops: number[] = new Array(columns).fill(1);
 
-    // Helper to convert hex to rgb
-    const hexToRgb = (hex: string) => {
-      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-      return result ? {
-        r: parseInt(result[1], 16),
-        g: parseInt(result[2], 16),
-        b: parseInt(result[3], 16)
-      } : { r: 0, g: 255, b: 157 };
-    };
-
-    let frameId: number;
-    let lastTime = 0;
-    const fps = 30; // Reverting to 30 FPS for classic feel
-    const interval = 1000 / fps;
-
-    const draw = (timestamp: number) => {
-      frameId = requestAnimationFrame(draw);
-
-      const delta = timestamp - lastTime;
-      if (delta < interval) return;
-      lastTime = timestamp - (delta % interval);
-
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.15)'; // Slightly darker trail
+    const draw = () => {
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
       ctx.fillRect(0, 0, width, height);
 
       ctx.font = `${fontSize}px "JetBrains Mono"`;
-
-      const rgb = hexToRgb(colorRef.current);
 
       for (let i = 0; i < drops.length; i++) {
         const text = characters.charAt(Math.floor(Math.random() * characters.length));
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        // Main character
-        const opacity = Math.random() * 0.5 + 0.3;
-        ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
+        // Add varying opacity for depth
+        const opacity = Math.random() * 0.5 + 0.1;
+        
+        // Parse hex to RGB for opacity support
+        const hex = colorRef.current;
+        const r = parseInt(hex.slice(1, 3), 16);
+        const g = parseInt(hex.slice(3, 5), 16);
+        const b = parseInt(hex.slice(5, 7), 16);
+        
+        ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
+        
         ctx.fillText(text, x, y);
-
-        // Glowing head (brighter character at the bottom of the drop)
-        if (Math.random() > 0.95) {
-          ctx.fillStyle = '#ffffff';
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`;
-          ctx.fillText(text, x, y);
-          ctx.shadowBlur = 0; // Reset shadow
-        }
 
         if (y > height && Math.random() > 0.975) {
           drops[i] = 0;
@@ -80,24 +53,28 @@ export const MatrixBackground = ({ color = '#00ff9d' }: { color?: string }) => {
       }
     };
 
-    frameId = requestAnimationFrame(draw);
+    const interval = setInterval(draw, 33);
+    
+    // Color change interval
+    let colorIndex = 0;
+    const colorInterval = setInterval(() => {
+      colorIndex = (colorIndex + 1) % colors.length;
+      colorRef.current = colors[colorIndex];
+    }, 5000);
 
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       const newColumns = Math.floor(width / fontSize);
-      // Preserve existing drops if possible, or reset
-      const oldDrops = [...drops];
       drops.length = newColumns;
-      for (let i = 0; i < newColumns; i++) {
-        drops[i] = oldDrops[i] || 1;
-      }
+      drops.fill(1);
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
-      cancelAnimationFrame(frameId);
+      clearInterval(interval);
+      clearInterval(colorInterval);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
@@ -105,7 +82,7 @@ export const MatrixBackground = ({ color = '#00ff9d' }: { color?: string }) => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none opacity-60 z-[-1]"
+      className="fixed inset-0 pointer-events-none opacity-20 z-0"
     />
   );
 };
