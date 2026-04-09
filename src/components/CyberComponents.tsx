@@ -23,7 +23,7 @@ export const MatrixBackground = () => {
     const drops: number[] = new Array(columns).fill(1);
 
     const draw = () => {
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.15)';
       ctx.fillRect(0, 0, width, height);
 
       ctx.font = `${fontSize}px "JetBrains Mono"`;
@@ -33,8 +33,8 @@ export const MatrixBackground = () => {
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        // Add varying opacity for depth
-        const opacity = Math.random() * 0.5 + 0.1;
+        // Add varying opacity for depth - increased for better visibility
+        const opacity = Math.random() * 0.4 + 0.6;
         
         // Parse hex to RGB for opacity support
         const hex = colorRef.current;
@@ -53,7 +53,7 @@ export const MatrixBackground = () => {
       }
     };
 
-    const interval = setInterval(draw, 33);
+    const interval = setInterval(draw, 20);
     
     // Color change interval
     let colorIndex = 0;
@@ -82,7 +82,7 @@ export const MatrixBackground = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none opacity-20 z-0"
+      className="fixed inset-0 pointer-events-none opacity-40 z-0"
     />
   );
 };
