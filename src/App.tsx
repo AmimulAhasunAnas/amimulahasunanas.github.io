@@ -28,7 +28,7 @@ export default function App() {
   }, []);
 
   return (
-    <div className="relative min-h-screen selection:bg-cyber-green/30 selection:text-cyber-green cyber-grid">
+    <div className="relative min-h-screen selection:bg-cyber-green/30 selection:text-cyber-green">
       <CustomCursor />
       
       <AnimatePresence>
