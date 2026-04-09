@@ -2,8 +2,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Terminal as TerminalIcon, X, Minimize2, Maximize2, ChevronRight } from 'lucide-react';
 
-export const MatrixBackground = () => {
+export const MatrixBackground = ({ color = '#00ff9d' }: { color?: string }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const colorRef = useRef(color);
+
+  useEffect(() => {
+    colorRef.current = color;
+  }, [color]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -16,27 +21,57 @@ export const MatrixBackground = () => {
     let height = (canvas.height = window.innerHeight);
 
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?/\\';
-    const fontSize = 14;
+    const fontSize = 16;
     const columns = Math.floor(width / fontSize);
     const drops: number[] = new Array(columns).fill(1);
 
-    const draw = () => {
-      ctx.fillStyle = 'rgba(5, 5, 5, 0.1)';
+    // Helper to convert hex to rgb
+    const hexToRgb = (hex: string) => {
+      const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+      return result ? {
+        r: parseInt(result[1], 16),
+        g: parseInt(result[2], 16),
+        b: parseInt(result[3], 16)
+      } : { r: 0, g: 255, b: 157 };
+    };
+
+    let frameId: number;
+    let lastTime = 0;
+    const fps = 30; // Reverting to 30 FPS for classic feel
+    const interval = 1000 / fps;
+
+    const draw = (timestamp: number) => {
+      frameId = requestAnimationFrame(draw);
+
+      const delta = timestamp - lastTime;
+      if (delta < interval) return;
+      lastTime = timestamp - (delta % interval);
+
+      ctx.fillStyle = 'rgba(5, 5, 5, 0.15)'; // Slightly darker trail
       ctx.fillRect(0, 0, width, height);
 
-      ctx.fillStyle = '#00ff9d';
       ctx.font = `${fontSize}px "JetBrains Mono"`;
+
+      const rgb = hexToRgb(colorRef.current);
 
       for (let i = 0; i < drops.length; i++) {
         const text = characters.charAt(Math.floor(Math.random() * characters.length));
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        // Add varying opacity for depth
-        const opacity = Math.random() * 0.5 + 0.1;
-        ctx.fillStyle = `rgba(0, 255, 157, ${opacity})`;
-        
+        // Main character
+        const opacity = Math.random() * 0.5 + 0.3;
+        ctx.fillStyle = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${opacity})`;
         ctx.fillText(text, x, y);
+
+        // Glowing head (brighter character at the bottom of the drop)
+        if (Math.random() > 0.95) {
+          ctx.fillStyle = '#ffffff';
+          ctx.shadowBlur = 10;
+          ctx.shadowColor = `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, 1)`;
+          ctx.fillText(text, x, y);
+          ctx.shadowBlur = 0; // Reset shadow
+        }
 
         if (y > height && Math.random() > 0.975) {
           drops[i] = 0;
@@ -45,20 +80,24 @@ export const MatrixBackground = () => {
       }
     };
 
-    const interval = setInterval(draw, 33);
+    frameId = requestAnimationFrame(draw);
 
     const handleResize = () => {
       width = canvas.width = window.innerWidth;
       height = canvas.height = window.innerHeight;
       const newColumns = Math.floor(width / fontSize);
+      // Preserve existing drops if possible, or reset
+      const oldDrops = [...drops];
       drops.length = newColumns;
-      drops.fill(1);
+      for (let i = 0; i < newColumns; i++) {
+        drops[i] = oldDrops[i] || 1;
+      }
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
-      clearInterval(interval);
+      cancelAnimationFrame(frameId);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
@@ -66,7 +105,7 @@ export const MatrixBackground = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none opacity-20 z-0"
+      className="fixed inset-0 pointer-events-none opacity-60 z-[-1]"
     />
   );
 };

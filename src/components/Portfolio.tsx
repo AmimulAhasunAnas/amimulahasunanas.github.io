@@ -28,6 +28,7 @@ import {
 } from "lucide-react";
 import { PERSONAL_INFO, SKILLS, EXPERIENCE, EDUCATION, CERTIFICATIONS, PROJECTS } from "../constants";
 import { MatrixBackground, InteractiveTerminal, CustomCursor } from "./CyberComponents";
+import { CyberConsole } from "./CyberConsole";
 
 const SectionHeader = ({ title, subtitle, number }: { title: string; subtitle?: string; number?: string }) => (
   <div className="mb-16 relative">
@@ -676,6 +677,14 @@ export const Contact = () => (
               <Download size={20} className="group-hover:translate-y-1 transition-transform" />
               Download_Full_CV
             </a>
+          </div>
+
+          <div className="mt-12">
+            <div className="mb-6 flex items-center gap-4">
+              <span className="text-[10px] font-mono text-cyber-green uppercase tracking-[0.3em]">Security_Challenge</span>
+              <div className="h-px flex-1 bg-white/5"></div>
+            </div>
+            <CyberConsole />
           </div>
           
           {/* Decorative background elements */}
