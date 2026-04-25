@@ -201,14 +201,24 @@ const Firewall = ({ onWin, onLose }: GameProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const interval = setInterval(() => {
+    let frameId: number;
+    let lastMoveTime = 0;
+    const moveInterval = 50;
+
+    const spawnIntervalId = setInterval(() => {
       setPackets(prev => [
         ...prev,
         { id: Date.now(), x: Math.random() * 80 + 10, y: -10 }
       ]);
     }, 1000);
 
-    const moveInterval = setInterval(() => {
+    const move = (timestamp: number) => {
+      frameId = requestAnimationFrame(move);
+      
+      const delta = timestamp - lastMoveTime;
+      if (delta < moveInterval) return;
+      lastMoveTime = timestamp - (delta % moveInterval);
+
       setPackets(prev => {
         const next = prev.map(p => ({ ...p, y: p.y + 2 }));
         if (next.some(p => p.y > 100)) {
@@ -217,11 +227,13 @@ const Firewall = ({ onWin, onLose }: GameProps) => {
         }
         return next;
       });
-    }, 50);
+    };
+
+    frameId = requestAnimationFrame(move);
 
     return () => {
-      clearInterval(interval);
-      clearInterval(moveInterval);
+      clearInterval(spawnIntervalId);
+      cancelAnimationFrame(frameId);
     };
   }, [onLose]);
 

@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from "motion/react";
-import { useState, useEffect } from "react";
+import { memo, useState, useEffect, useCallback } from "react";
 import { 
   Shield, 
   Lock, 
@@ -30,7 +30,7 @@ import { PERSONAL_INFO, SKILLS, EXPERIENCE, EDUCATION, CERTIFICATIONS, PROJECTS 
 import { MatrixBackground, InteractiveTerminal, CustomCursor } from "./CyberComponents";
 import { CyberConsole } from "./CyberConsole";
 
-const SectionHeader = ({ title, subtitle, number }: { title: string; subtitle?: string; number?: string }) => (
+const SectionHeader = memo(({ title, subtitle, number }: { title: string; subtitle?: string; number?: string }) => (
   <div className="mb-16 relative">
     <div className="flex items-center gap-4 mb-4">
       {number && <span className="text-cyber-green font-mono text-sm opacity-50">{number}</span>}
@@ -46,13 +46,22 @@ const SectionHeader = ({ title, subtitle, number }: { title: string; subtitle?: 
       {title}
     </motion.h2>
   </div>
-);
+));
 
 export const Navbar = () => {
   const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
+    let ticking = false;
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          setScrolled(window.scrollY > 50);
+          ticking = false;
+        });
+        ticking = true;
+      }
+    };
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);

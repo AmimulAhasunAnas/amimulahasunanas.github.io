@@ -19,29 +19,37 @@ export const MatrixBackground = () => {
 
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789@#$%^&*()_+-=[]{}|;:,.<>?/\\';
     const fontSize = 14;
-    const columns = Math.floor(width / fontSize);
-    const drops: number[] = new Array(columns).fill(1);
+    let columns = Math.floor(width / fontSize);
+    let drops: number[] = new Array(columns).fill(1);
 
-    const draw = () => {
+    let frameId: number;
+    let lastTime = 0;
+    const fps = 50; // Target FPS
+    const interval = 1000 / fps;
+
+    const draw = (timestamp: number) => {
+      frameId = requestAnimationFrame(draw);
+
+      const delta = timestamp - lastTime;
+      if (delta < interval) return;
+      lastTime = timestamp - (delta % interval);
+
       ctx.fillStyle = 'rgba(5, 5, 5, 0.15)';
       ctx.fillRect(0, 0, width, height);
 
       ctx.font = `${fontSize}px "JetBrains Mono"`;
+
+      const hex = colorRef.current;
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
 
       for (let i = 0; i < drops.length; i++) {
         const text = characters.charAt(Math.floor(Math.random() * characters.length));
         const x = i * fontSize;
         const y = drops[i] * fontSize;
 
-        // Add varying opacity for depth - increased for better visibility
         const opacity = Math.random() * 0.4 + 0.6;
-        
-        // Parse hex to RGB for opacity support
-        const hex = colorRef.current;
-        const r = parseInt(hex.slice(1, 3), 16);
-        const g = parseInt(hex.slice(3, 5), 16);
-        const b = parseInt(hex.slice(5, 7), 16);
-        
         ctx.fillStyle = `rgba(${r}, ${g}, ${b}, ${opacity})`;
         
         ctx.fillText(text, x, y);
@@ -53,7 +61,7 @@ export const MatrixBackground = () => {
       }
     };
 
-    const interval = setInterval(draw, 20);
+    frameId = requestAnimationFrame(draw);
     
     // Color change interval
     let colorIndex = 0;
@@ -62,19 +70,23 @@ export const MatrixBackground = () => {
       colorRef.current = colors[colorIndex];
     }, 5000);
 
+    let resizeTimeout: ReturnType<typeof setTimeout>;
     const handleResize = () => {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      const newColumns = Math.floor(width / fontSize);
-      drops.length = newColumns;
-      drops.fill(1);
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+        columns = Math.floor(width / fontSize);
+        drops = new Array(columns).fill(1);
+      }, 200);
     };
 
     window.addEventListener('resize', handleResize);
 
     return () => {
-      clearInterval(interval);
+      cancelAnimationFrame(frameId);
       clearInterval(colorInterval);
+      clearTimeout(resizeTimeout);
       window.removeEventListener('resize', handleResize);
     };
   }, []);
